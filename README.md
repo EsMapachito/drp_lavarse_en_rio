@@ -7,6 +7,6 @@ SI UTILIZAS EL RECURSO, MENCIONAME Y CONTRIBUYE A QUE LA COMUNIDAD ESPAÑOLA DE 
 
 A disfrutarlo!!
 
-VERSIÓN 1.0 04-08-2020
+Version 1.0 05/08/2020
 
 Agradecimientos a wcrp_trumpet.
