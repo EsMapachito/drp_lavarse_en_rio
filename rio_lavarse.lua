@@ -44,8 +44,8 @@ Citizen.CreateThread(function()
          -----FIN DE LO NUEVO-------
 
     --if (Vdist(0x5BA7A68A346A5A91,coords.x+3, coords.y+3, coords.z) < 1.0) then
-            DrawTxt("[~e~G~q~] lavarse ~e~en el rio~q~", 0.50, 0.85, 0.7, 0.7, true, 255, 255, 255, 255, true)
-            if IsControlJustReleased(0, 0x760A9C6F) then -- e
+            DrawTxt("[ENTER] lavarse (terminar--> BACKSPACE)", 0.08, 0.05, 0.23, 0.23, true, 255, 255, 255, 255, true)
+            if IsControlJustReleased(0, 0xC7B5340A) then -- e
                 TriggerEvent("drp:rio")
                 print('lavandose en rio')
 
@@ -81,7 +81,7 @@ Citizen.CreateThread(function()
 	local playerPed = PlayerPedId()
         Citizen.Wait(0)
 		
-        if whenKeyJustPressed(keys['BACKSPACE']) then --TABULADOR PARA DETENER ACCIÓN
+        if whenKeyJustPressed(keys['BACKSPACE']) then --RETROCESO PARA DETENER ACCIÓN
             if rio ~= 0 then
             SetEntityAsMissionEntity(rio)
             DeleteObject(rio)
@@ -101,11 +101,11 @@ function whenKeyJustPressed(key)
 end
 
 function DrawTxt(str, x, y, w, h, enableShadow, col1, col2, col3, a, centre)
-    local str = CreateVarString(10, "LITERAL_STRING", str, Citizen.ResultAsLong())
-   SetTextScale(w, h)
-   SetTextColor(math.floor(col1), math.floor(col2), math.floor(col3), math.floor(a))
-   SetTextCentre(centre)
-   if enableShadow then SetTextDropshadow(1, 0, 0, 0, 255) end
-   Citizen.InvokeNative(0xADA9255D, 10);
-   DisplayText(str, x, y)
+    local str = CreateVarString(10, "LITERAL_STRING", str)
+    SetTextScale(w, h)
+    SetTextColor(math.floor(col1), math.floor(col2), math.floor(col3), math.floor(a))
+    SetTextCentre(centre)
+    SetTextFontForCurrentCommand(15) -- Cambiar tipo de fuente: 1,2,3,...
+    if enableShadow then SetTextDropshadow(1, 0, 0, 0, 255) end
+    DisplayText(str, x, y)
 end
