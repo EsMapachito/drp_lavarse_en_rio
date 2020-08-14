@@ -12,3 +12,6 @@ Agradecimientos a wcrp_trumpet.
 ---- VERSION 1.1 05-08-2020----
 - Mejorada interfaz de texto en pantalla.
 - Cambios en la asignación de teclas.
+
+---- VERSION 1.2 14-08-2020----
+- Mejorada proximidad al agua. Ahora necesitas estar en contacto directo con el agua.
