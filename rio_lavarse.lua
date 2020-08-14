@@ -1,7 +1,6 @@
 -- RECURSO MODIFICADO PARA EL SERVIDOR RP DESPERADOSRP.COM --
 -- Implementado por Mapachito --
 
-local keys = { ['G'] = 0x760A9C6F, ['S'] = 0xD27782E3, ['W'] = 0x8FD015D8, ['H'] = 0x24978A28, ['G'] = 0x5415BE48, ["ENTER"] = 0xC7B5340A, ['E'] = 0xDFF812F9,["BACKSPACE"] = 0x156F7119 }
 local WaterTypes = {
     [1] =  {["name"] = "Sea of Coronado",       ["waterhash"] = -247856387, ["watertype"] = "lake"},
     [2] =  {["name"] = "San Luis River",        ["waterhash"] = -1504425495, ["watertype"] = "river"},
@@ -41,62 +40,32 @@ Citizen.CreateThread(function()
         local Water = Citizen.InvokeNative(0x5BA7A68A346A5A91,coords.x+3, coords.y+3, coords.z)
             for k,v in pairs(WaterTypes) do 
             if Water == WaterTypes[k]["waterhash"]  then
-         -----FIN DE LO NUEVO-------
-
-    --if (Vdist(0x5BA7A68A346A5A91,coords.x+3, coords.y+3, coords.z) < 1.0) then
-            DrawTxt("[ENTER] lavarse (terminar--> BACKSPACE)", 0.08, 0.05, 0.23, 0.23, true, 255, 255, 255, 255, true)
-            if IsControlJustReleased(0, 0xC7B5340A) then -- e
-                TriggerEvent("drp:rio")
-                print('lavandose en rio')
-
-            end
-     end
-    end
-end
-end)
-
---RegisterCommand("rio", function(source, args, rawCommand) -- slash COMMAND
-AddEventHandler('drp:rio', function()
-    local _source = source
-            if rio ~= 0 then
-                SetEntityAsMissionEntity(rio)
-                DeleteObject(nativerioprop)
-                rio = 0
+                if IsEntityInWater(PlayerPedId()) then
+                    DrawTxt("[ENTER] lavarse", 0.04, 0.05, 0.23, 0.23, true, 255, 255, 255, 255, true)
+                    if IsControlJustReleased(0, 0xC7B5340A) then -- e
+                        StartWash("amb_misc@world_human_wash_face_bucket@ground@male_a@idle_d", "idle_l")
+                    end
                 end
-                local playerPed = PlayerPedId()
-                Citizen.Wait(0)
-                ClearPedTasksImmediately(PlayerPedId())
-                TaskStartScenarioInPlace(playerPed, GetHashKey('WORLD_HUMAN_WASH_FACE_BUCKET_GROUND_NO_BUCKET'), -1, true, false, false, false)
-                local x,y,z = table.unpack(GetOffsetFromEntityInWorldCoords(PlayerPedId(), 0.0, 2.0, -1.55))
-                --local prop = CreateObject(GetHashKey("p_shavingbox01x"), x, y, z, true, false, true)
-                SetEntityHeading(prop, GetEntityHeading(PlayerPedId()))
-                PlaceObjectOnGroundProperly(prop)
-                rio = prop
-    
-    --end, false)
-end)
-
-Citizen.CreateThread(function()
-    while true do
-	local playerPed = PlayerPedId()
-        Citizen.Wait(0)
-		
-        if whenKeyJustPressed(keys['BACKSPACE']) then --RETROCESO PARA DETENER ACCIÓN
-            if rio ~= 0 then
-            SetEntityAsMissionEntity(rio)
-            DeleteObject(rio)
-			ClearPedTasksImmediately(PlayerPedId())
-            rio = 0
             end
-     end
-	end
+        end
+    end
 end)
 
-function whenKeyJustPressed(key)
-    if Citizen.InvokeNative(0x580417101DDB492F, 0, key) then
-        return true
-    else
-        return false
+StartWash = function(dic, anim)
+    LoadAnim(dic)
+    TaskPlayAnim(PlayerPedId(), dic, anim, 1.0, 8.0, 5000, 0, 0.0, false, false, false)
+    Citizen.Wait(5000)
+    ClearPedTasks(PlayerPedId())
+    Citizen.InvokeNative(0x6585D955A68452A5, PlayerPedId())
+    Citizen.InvokeNative(0x9C720776DAA43E7E, PlayerPedId())
+    Citizen.InvokeNative(0x8FE22675A5A45817, PlayerPedId())
+end
+
+LoadAnim = function(dic)
+    RequestAnimDict(dic)
+
+    while not (HasAnimDictLoaded(dic)) do
+        Citizen.Wait(0)
     end
 end
 
